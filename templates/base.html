@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v4.0.1">
+    <title>Questions and Answers</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+
+      .question {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    margin-bottom: 30px;
+    padding: 20px;
+    border: 1px solid #dedede;
+    background: #FFF;
+    -moz-box-shadow: 0 0 5px #dedede;
+    -webkit-box-shadow: 0 0 5px #dedede;
+    box-shadow: 0 0 5px #dedede;
+    position: relative;
+}
+
+.question-author {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    float: left;
+    text-align: center;
+    width: 71px;
+    height: 71px;
+    overflow: hidden;
+    padding: 2px;
+    border: 1px solid #dedede;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+}
+
+.question-author-img {
+    position: relative;
+    display: block;
+}
+    </style>
+ 
+  </head>
+  <body class="bg-light">
+    <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
+  <a class="navbar-brand mr-auto mr-lg-0" href="#">Questions & Answers</a>
+  <button class="navbar-toggler p-0 border-0" type="button" data-toggle="offcanvas">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
+    <ul class="navbar-nav mr-auto" style="margin-left: 45%;">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">All Questions</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Ask Question</a>
+
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Contact</a>
+      </li>
+
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+  </div>
+</nav>
+
+
+<main role="main" class="container">
+ 
+
+  {% block content %}
+
+
+  {% endblock content %}
+
+
+</main>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+</body>
+</html>
