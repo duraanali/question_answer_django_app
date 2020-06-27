@@ -1,33 +1,57 @@
 {% extends "base.html" %}
-
 {% block content %}
 
-<div style="margin-top: 100px;">
-<div class="my-3 p-3 rounded shadow-sm">
-    <h6 class="border-bottom border-gray pb-2 mb-0">Recent Questions</h6>
-    {% for question in questions_list%}
-    <div class="question">
-    <div class="media text-muted pt-3">
-        
-        <div class="question-author">
-            <a href="#" original-title="avatar" class="question-author-img tooltip-n"><span></span><img alt="" src="https://2code.info/demo/html/ask-me/images/demo/avatar.png"></a>
-        </div>
+<form action='' methord="GET">
+    <input type="text" style="width: 85%; display: inline-block; border: 2px solid;" name="q" placeholder="search" value="{{ request.GET.q }}">
+    <button type="submit" class="color button small" style="padding: 10px; width: 13%;">Search</button>
+</form>
+<div class="tabs-warp question-tab">
+ 
+  <div class="tab-inner-warp">
+<div class="tab-inner">
 
-      <div style="display: flex; flex-direction: column; margin-left: 101px; margin-top: -9px;">
-      <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-        <a href="/{{question.id}}/question_detail"><strong class="d-block text-gray-dark h4" style="color: black;">{{question.title}}</strong></a>
-        {{question.description}} 
-      </p>
-      <em>Created {{ question.created|timesince }} ago</em>
+  {% for question in questions_list %}
+<article class="question question-type-normal">
+  <h2>
   
-    </div>
-    </div>
-</div>
-    {% endfor %}
+    <a href="/{{question.id}}/question_detail">{{question.title}}</a>
+  </h2>
+  <a class="question-report" href="#">Report</a>
 
-    <small class="d-block text-right mt-3">
-      <a href="#">All Questions</a>
-    </small>
+  <div class="question-author">
+    <a href="#" original-title="ahmed" class="question-author-img tooltip-n"><span></span><img alt="" src="http://placehold.it/60x60/FFF/444"></a>
   </div>
+  <div class="question-inner">
+    <div class="clearfix"></div>
+    <p class="question-desc">{{question.description|truncatewords:50}} </p>
+    <div class="question-details">
+      {% if question.status == 1 %}
+      <span class="question-answered question-answered-done"><i class="icon-remove"></i>Not Solved</span>
+      {% else %}
+      <span class="question-answered question-answered-done"><i class="icon-ok"></i>Solved</span>
+      {% endif %}
+    </div>
+    <!-- <span class="question-category"><a href="#"><i class="icon-folder-close"></i>wordpress</a></span> -->
+    <span class="question-date"><i class="icon-time"></i>{{ question.created|timesince }} ago</span>
+    {% for answer in answers_list %}
+    <span class="question-comment"><a href="#"><i class="icon-comment"></i>5 Answer {{ answer.count }}</a></span>
+    {% endfor %}
+    <span class="question-view"><i class="icon-user"></i>Asked By {{ question.author }}</span>
+    <!-- <span class="question-view"><i class="icon-user"></i>70 views</span> -->
+    <span class="single-question-vote-result">+22</span>
+    <ul class="single-question-vote">
+      <li><a href="#" class="single-question-vote-down" title="Dislike"><i class="icon-thumbs-down"></i></a></li>
+      <li><a href="#" class="single-question-vote-up" title="Like"><i class="icon-thumbs-up"></i></a></li>
+    </ul>
+    <div class="clearfix"></div>
+    </div>
+</article>
+{% endfor %}
+
+
+
+<a href="#" class="load-questions"><i class="icon-refresh"></i>Load More Questions</a>
 </div>
+</div>
+</div><!-- End page-content -->
 {% endblock %}

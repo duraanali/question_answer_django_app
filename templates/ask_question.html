@@ -1,0 +1,61 @@
+{% load static %}
+{% include 'include/header.html' %}
+{% include 'include/nav.html' %}
+<p></p>
+<section class="container main-content">
+	<div class="row">
+		<div class="col-md-12">	
+				<div class="page-content ask-question" style="padding: 60px;">
+					<div class="boxedtitle page-title">
+						<h2>Ask Question</h2>
+					</div>
+			{% if user.is_authenticated %}
+					<p>Duis dapibus aliquam mi, eget euismod sem scelerisque ut. Vivamus at elit quis urna adipiscing iaculis.
+						Curabitur vitae velit in neque dictum blandit. Proin in iaculis neque.</p>
+			
+					<div class="form-style form-style-3" id="question-submit">
+						
+						<form method="POST">
+								{% csrf_token %}
+							<div class="form-inputs clearfix">
+								<p>
+									<label class="required">Question Title<span>*</span></label>
+									{{ form.title }}
+							
+								</p>
+					
+								 <p>
+									<label class="required">Status<span>*</span></label>
+									
+										{{ form.status }}
+							
+								</p> 
+							
+							
+			
+							
+			
+							</div>
+							<div id="form-textarea">
+								<p>
+									<label class="required">Details<span>*</span></label>
+									{{ form.description }}
+								</p>
+							</div>
+							<p class="form-submit">
+								<input type="submit" value="Publish Your Question"
+									class="button color small submit">
+							</p>
+						</form>
+						{% else %}
+							<a href="/{{'login'}}"><h4 style="text-decoration: underline; color: blue">Please Login to post a question</h4></a>
+						{% endif %}
+					</div>
+			</div><!-- End main -->
+		</div><!-- End main -->
+
+
+	</div><!-- End row -->
+</section><!-- End container -->
+
+{% include 'include/footer.html' %}

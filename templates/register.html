@@ -1,0 +1,51 @@
+
+	{% include 'include/header.html' %}
+	{% include 'include/nav.html' %}
+	<p></p>
+	<section class="container main-content">
+		<div class="row">
+			<div class="col-md-12">
+		<h2>Register Now<i class="icon-remove"></i></h2>
+		<div class="form-style form-style-3">
+			<form method="POST">
+					{% csrf_token %}
+				<div class="form-inputs clearfix">
+					<p>
+						<label class="required">Username<span>*</span></label>
+						{{ form.username }}
+					</p>
+					<p>
+						
+						<label class="required">Your Bio<span>*</span></label>
+						{{ form.bio }}
+							
+					</p>
+					<p>
+						<label class="required">E-Mail<span>*</span></label>
+						{{ form.email }}
+					</p>
+					<p>
+						<label class="required">Country<span>*</span></label>
+						{{ form.country }}
+					</p>
+					<p>
+						<label class="required">Password<span>*</span></label>
+						{{ form.password1 }}
+					</p>
+					<p>
+						<label class="required">Confirm Password<span>*</span></label>
+						{{ form.password2 }}
+					</p>
+				</div>
+				<p class="form-submit">
+					<input type="submit" value="Signup" class="button color small submit">
+				</p>
+			</form>
+					</div>
+			
+			</div><!-- End main -->
+		
+		</div><!-- End row -->
+	</section><!-- End container -->
+	
+	{% include 'include/footer.html' %}

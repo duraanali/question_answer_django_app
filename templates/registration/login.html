@@ -1,0 +1,50 @@
+{% include 'include/header.html' %}
+{% include 'include/nav.html' %}
+<p></p>
+
+<section class="container main-content">
+    <div class="login">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="page-content">
+                    <h2>Login</h2>
+                    <div class="form-style form-style-3">
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="form-inputs clearfix">
+                                <p class="login-text">
+                                    {{ form.username }}
+                                    <i class="icon-user"></i>
+                                </p>
+                                <p class="login-password">
+                                    {{ form.password }}
+                                    <i class="icon-lock"></i>
+                                    <a href="#">Forget</a>
+                                </p>
+                            </div>
+                            <p class="form-submit login-submit">
+                                <input type="submit" value="Log in" class="button color small login-submit submit">
+                            </p>
+                            <div class="rememberme">
+                                <label><input type="checkbox" checked="checked"> Remember Me</label>
+                            </div>
+                        </form>
+                    </div>
+                </div><!-- End page-content -->
+            </div><!-- End col-md-6 -->
+            <div class="col-md-6">
+                <div class="page-content">
+                    <h2>Register Now</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi adipiscing gravdio, sit amet
+                        suscipit risus ultrices eu. Fusce viverra neque at purus laoreet consequa. Vivamus vulputate
+                        posuere nisl quis consequat. suscipit risus ultrices eu. Fusce viverra neque at purus laoreet consequa. Vivamus vulputate
+                        posuere nisl quis consequat. suscipit risus ultrices eu. Fusce viverra neque at purus laoreet consequa. Vivamus vulputate
+                        posuere nisl quis consequat.</p>
+                    <a class="button small color" href="/{{'register'}}">Create an account</a>
+                </div><!-- End page-content -->
+            </div><!-- End col-md-6 -->
+        </div><!-- End row -->
+    </div><!-- End login -->
+</section><!-- End container -->
+
+{% include 'include/footer.html' %}

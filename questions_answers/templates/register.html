@@ -1,0 +1,34 @@
+{% extends "include/nav.html" %}
+
+{% block register %}
+        
+        <!-- <form>
+            <div class="form-inputs clearfix">
+                <p>
+                    <label class="required">Username<span>*</span></label>
+                    <input type="text">
+                </p>
+                <p>
+                    <label class="required">E-Mail<span>*</span></label>
+                    <input type="email">
+                </p>
+                <p>
+                    <label class="required">Password<span>*</span></label>
+                    <input type="password" value="">
+                </p>
+                <p>
+                    <label class="required">Confirm Password<span>*</span></label>
+                    <input type="password" value="">
+                </p>
+            </div>
+            <p class="form-submit">
+                <input type="submit" value="Signup" class="button color small submit">
+            </p>
+        </form> -->
+         <form method="POST">
+            {% csrf_token %}
+            {{ form }}
+            <button type="submit">Register</button>
+        </form>
+
+{% endblock %}

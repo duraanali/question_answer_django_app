@@ -1,0 +1,29 @@
+{% load static %}
+
+<header id="header">
+    <section class="container clearfix">
+        <div class="logo"><a href="#">
+           <a href="/{{''}}"> <img src="{% static "/images/logo.png" %}" alt="My image"></a>
+        
+        
+        </a></div>
+        <nav class="navigation">
+            <ul>
+                <li class="current_page_item"><a href="/{{''}}"> Home</a></li>
+                <li class="ask_question"><a href="/{{'ask_question'}}">Ask Question</a></li>
+                {% if user.is_authenticated %}
+                <li><a href="/{{'profile'}}">Profile</a>
+                    <ul>
+                        <li><a href="/{{'logout'}}">Logout</a>
+                    </ul>
+                </li>
+                {% else %}
+                <li><a href="/{{'login'}}">Login</a></li>
+                <li><a href="/{{'register'}}">Sign Up</a></li>
+                {% endif %}
+                </li>
+           
+            </ul>
+        </nav>
+    </section><!-- End container -->
+</header><!-- End header -->
