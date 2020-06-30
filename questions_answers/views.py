@@ -1,7 +1,7 @@
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.shortcuts import render, redirect, reverse
+from django.http import HttpResponse, HttpResponseRedirect
 from .models import Questions, Answers
-from .forms import RegisterForm, askQuestion
+from .forms import RegisterForm, askQuestion, AnswerQuestion, editQuestion
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
@@ -12,9 +12,11 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import JsonResponse
 
 def questions_list(request):
-    question_count = Questions.objects.count()
+    
+    # All Questions
     questions = Questions.objects.all().order_by('-created')
-    answers_count_for_question = Answers.objects.filter().count()
+    
+    # Search Function
     query = request.GET.get('q')
     if query:
         questions = questions.filter(
@@ -23,27 +25,65 @@ def questions_list(request):
             Q(author__username__icontains=query)
             
             ).distinct()
-    print("answers_count", answers_count_for_question)
+
+
+    # Pagination of questions
+    paginator = Paginator(questions, 3)  # 3 posts in each page
+    page = request.GET.get('page')
+    
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer deliver the first page
+        posts = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range deliver last page of results
+        posts = paginator.page(paginator.num_pages)
+        
+    
     context = {
         "questions_list": questions,
-        "question_count": question_count
+        'posts': posts,
+        'page': page
     }
+    
     return render(request, "questions.html", context)
 
 
 def question_detail(request, id):
-    question = Questions.objects.get(id=id)
-    answers_count = Answers.objects.filter().count()
+    singleQuestion = Questions.objects.get(id=id)
+    
+    answer = None
+    # Reply Function
+    if request.method == "POST":
+        form = AnswerQuestion(data=request.POST)
+        if form.is_valid():
+            answer = form.save(commit=False)
+            question = get_object_or_404(Questions, id=id)
+            print("question", question)
+            answer.user = request.user
+            answer.question_id = question
+            answer.save()
+            return HttpResponseRedirect("question_detail")
+    else:
+        form = AnswerQuestion(request.POST)
+        
+    # Number of Replies for 1 Question
+    number_answers = Answers.objects.filter(question_id=id).count()
+    print("nums of answers", number_answers)
+
     context = {
-        "question": question
+        "singleQuestion": singleQuestion,
+        "number_answers": number_answers,
+        "form": form
     }
     
     return render(request, "question_detail.html", context)
 
 def answers_list(request, question_id):
     answer_count = Answers.objects.count(question_id=question_id)
-    answers = Answers.objects.all()
-    print("answer", answers.reply)
+    
+    answers = Answers.objects.all().order_by('-created')
     context = {
         "answers": answers,
         "answer_count": answer_count
@@ -94,37 +134,55 @@ def newQuestion(request):
     return render(request, template, context)
 
 
-def delete_question(request, id):
-    question = get_object_or_404(askQuestion, id=id)
-    print("question deleted", question)
-    question.delete()
-    return redirect('/')
+
+
+def delete_question(request, id=None):
+    question_to_delete = Questions.objects.get(id=id)
+    question_to_delete.delete()
+    return HttpResponseRedirect('/')
+
+
+def delete_reply(request, id=None):
+    answer_to_delete = Answers.objects.get(id=id)
+    answer_to_delete.delete()
+    return HttpResponseRedirect('/')
     
     
-@login_required(login_url='/')
-def editQuestion(request, id):
-    question = Questions.objects.get(id=id, author=request.user)
-    
+
+def editCurrentQuestion(request, id=None):
+    current_user = request.user
+    question = Questions.objects.get(id=id, author=current_user)
+    print("question", question)
+
     if request.method == 'POST':
-        form = askQuestion(request.POST, instance=question)
+        form = editQuestion(request.POST, instance=question)
         if form.is_valid():
             form.save()
             return redirect("/")
         else:
-            form = askQuestion(instance=question)
+            form = editQuestion(instance=question)
     else:
-        form = askQuestion(instance=question)
-    return render(request, 'edit_question.html', {'form': form, 'question': question})
+        form = editQuestion(instance=question)
+        
+    context = {'form': form, 'question': question}
+    
+    return render(request, 'edit_question.html', context)
 
 
 def userInfo(request):
     logged_in_user = request.user
     logged_in_user_questions = Questions.objects.filter(author=logged_in_user).order_by('-created')
-    logged_in_user_questions = Questions.objects.filter(author=logged_in_user).order_by('-created')
+    logged_in_user_questions_num = Questions.objects.filter(author=logged_in_user).count()
+    logged_in_user_answers_num = Answers.objects.filter(user=logged_in_user).count()
+    
+    print("logged_in_user_answers_num", logged_in_user_answers_num)
     current_user = request.user
+    
     context = {
         "current_user": current_user,
-        "logged_in_user_questions": logged_in_user_questions
+        "logged_in_user_questions": logged_in_user_questions,
+        "logged_in_user_questions_num": logged_in_user_questions_num,
+        "logged_in_user_answers_num": logged_in_user_answers_num
     }
     return render(request, 'profile.html', context)
 

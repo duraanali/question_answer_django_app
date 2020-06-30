@@ -6,10 +6,12 @@ from .views import (
     allUsers, 
     register, 
     newQuestion, 
-    editQuestion, 
+    editCurrentQuestion,
     delete_question, 
     userInfo,
-    user_questions
+    user_questions,
+    answers_list,
+    delete_reply
 )
 
 
@@ -20,11 +22,13 @@ urlpatterns = [
     path('register/', register, name="register"),
     path('allusers/', allUsers),
     path('ask_question/', newQuestion),
+    path('answers/', answers_list),
     path('profile/', userInfo),
     path('user_questions/', user_questions),
-    path('<id>/edit_question', editQuestion),
+    path('<id>/edit_question', editCurrentQuestion),
     path('', include("django.contrib.auth.urls")),
-    path('<id>/question_detail', question_detail),
+    path('<id>/question_detail', question_detail, name="question_detail"),
     path('tinymce/', include('tinymce.urls')),
-    path('question/<int:id>/delete/', delete_question, name='delete_question'),
+    path('<id>/delete_question', delete_question),
+    path('<id>/delete_reply', delete_reply),
 ]

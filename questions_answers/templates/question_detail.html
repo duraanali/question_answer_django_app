@@ -1,72 +1,42 @@
 {% extends "single_question.html" %}
 
-<!-- {% block content %}
 
-<div style="margin-top: 100px;">
-<div class="my-3 p-3 rounded shadow-sm">
-    <h6 class="border-bottom border-gray pb-2 mb-0">Question Detail</h6>
-    <div class="question">
-    <div class="media text-muted pt-3">
-        
-        <div class="question-author">
-            <a href="#" original-title="avatar" class="question-author-img tooltip-n"><span></span><img alt="" src="https://2code.info/demo/html/ask-me/images/demo/avatar.png"></a>
-        </div>
-
-      <div style="display: flex; flex-direction: column; margin-left: 101px; margin-top: -9px;">
-      <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-        <strong class="d-block text-gray-dark h4" style="color: black;">{{question.title}}</strong>
-        {{question.description}}
-       
-      </p>
-      
-      <em>Created {{ question.created|timesince }} ago</em>
-
-      {% for answer in answers%}
-        {{ answer.reply}}
-      {% endfor %}
-    </div>
-    </div>
-</div>
-
-    <small class="d-block text-right mt-3">
-      <a href="#">All Questions</a>
-    </small>
-  </div>
-</div>
-{% endblock %} -->
 
 {% block single %}
 
       <article class="question single-question question-type-normal">
+        
         <h2>
-         {{question.title}}
+         {{singleQuestion.title}}
         </h2>
-        <a class="question-report" href="#">Report</a>
-        {% if user.is_authenticated and request.user == question.author %}
-        <a href="/{{question.id}}/edit_question"><div class="question-type-main"><i class="icon-question-sign"></i>Edit Question</div></a>
-        {% endif %}
+        
         <div class="question-inner">
-          <div class="clearfix"></div>
+   
           <div class="question-desc">
-            <p>{{question.description}}</p>
+            <p>{{singleQuestion.description}}</p>
           </div>
-     
+          <div style="display: flex;">
           <div class="question-details">
-            {% if question.status == 1 %}
+            {% if singleQuestion.status == 1 %}
             <span class="question-answered question-answered-done"><i class="icon-remove"></i>Not Solved</span>
             {% else %}
             <span class="question-answered question-answered-done"><i class="icon-ok"></i>Solved</span>
             {% endif %}
           </div>
-          <!-- <span class="question-category"><a href="#"><i class="icon-folder-close"></i>wordpress</a></span> -->
-          <span class="question-date"><i class="icon-time"></i>{{ question.created|timesince }} ago</span>
-          <span class="question-comment"><a href="#"><i class="icon-comment"></i>5 Answer</a></span>
-          <span class="question-view"><i class="icon-user"></i>Asked By {{ question.author }}</span>
-          <span class="single-question-vote-result">+22</span>
-          <ul class="single-question-vote">
-            <li><a href="#" class="single-question-vote-down" title="Dislike"><i class="icon-thumbs-down"></i></a></li>
-            <li><a href="#" class="single-question-vote-up" title="Like"><i class="icon-thumbs-up"></i></a></li>
-          </ul>
+          <span class="question-date"><i class="icon-time"></i>Asked {{ singleQuestion.created|timesince }} ago</span>
+          <span class="question-comment"><i class="icon-comment"></i>{{number_answers}} Answer(s)</span>
+          <span class="question-view"><i class="icon-user"></i>Asked By {{ singleQuestion.author }}</span>
+          {% if user.is_authenticated and request.user == singleQuestion.author %}
+          <a style="margin-left: 20px;" href="/{{singleQuestion.id}}/edit_question">
+            <div class="question-comment"><i class="icon-pencil"></i>Edit</div>
+          </a>
+          <a class="question-comment" href="/{{singleQuestion.id}}/delete_question">
+            <i class="icon-remove"></i>Delete
+          </a> 
+          
+          {% endif %}
+      
+          </div>
           <div class="clearfix"></div>
         </div>
       </article>
@@ -74,10 +44,10 @@
   
 
       <div id="commentlist" class="page-content">
-        <div class="boxedtitle page-title"><h2>Answers ( <span class="color">5</span> )</h2></div>
+        <div class="boxedtitle page-title"><h2>Answers ( <span class="color">{{number_answers}}</span> )</h2></div>
         <ol class="commentlist clearfix">
             <li class="comment">
-                {% for answer in question.reply.all %}
+                {% for answer in singleQuestion.answersByQuestion.all %}
                 <div class="comment-body comment-body-answered clearfix"> 
                     <div class="avatar"><img alt="" src="http://placehold.it/60x60/FFF/444"></div>
                     <div class="comment-text">
@@ -93,13 +63,22 @@
                           <div class="comment-meta">
                                 <div class="date"><i class="icon-time"></i>{{ answer.created }}</div> 
                             </div>
-                            <a class="comment-reply" href="#"><i class="icon-reply"></i>Reply</a> 
+                            <!-- <a class="comment-reply" href="#"><i class="icon-reply"></i>Reply</a>  -->
                         </div>
                         <div class="text"><p>{{ answer.reply }}</p>
                         </div>
-                <div class="question-answered question-answered-done"><i class="icon-ok"></i>Best Answer</div>
+                <!-- <div class="question-answered question-answered-done"><i class="icon-ok"></i>Best Answer</div> -->
+                {% if user.is_authenticated and request.user == answer.user %}
+                <a class="delete_button" style="margin-left: 20px;" href="/{{answer.id}}/delete_reply">
+                  <i class="icon-remove"></i> Delete
+                </a>
+                {% endif %}
                     </div>
                 </div>
+                {% empty %}
+                <div class="comment-body comment-body-answered clearfix">
+                <p>No answers here yet :(</p>
+                  </div>
                 {% endfor %}
                 
                     </li>
@@ -110,31 +89,25 @@
       
       <div id="respond" class="comment-respond page-content clearfix">
           <div class="boxedtitle page-title"><h2>Leave a reply</h2></div>
-          <form action="" method="post" id="commentform" class="comment-form">
-              <div id="respond-inputs" class="clearfix">
-                  <p>
-                      <label class="required" for="comment_name">Name<span>*</span></label>
-                      <input name="author" type="text" value="" id="comment_name" aria-required="true">
-                  </p>
-                  <p>
-                      <label class="required" for="comment_email">E-Mail<span>*</span></label>
-                      <input name="email" type="text" value="" id="comment_email" aria-required="true">
-                  </p>
-                  <p class="last">
-                      <label class="required" for="comment_url">Website<span>*</span></label>
-                      <input name="url" type="text" value="" id="comment_url">
-                  </p>
-              </div>
+          {% if user.is_authenticated %}
+      
+          <form action="" method="post" action="" class="comment-form">
+            {% csrf_token %}
+            
               <div id="respond-textarea">
                   <p>
-                      <label class="required" for="comment">Comment<span>*</span></label>
-                      <textarea id="comment" name="comment" aria-required="true" cols="58" rows="8"></textarea>
+                      <label for="comment">Answer<span>*</span></label>
+                      {{ form.reply }}
                   </p>
               </div>
               <p class="form-submit">
-                <input name="submit" type="submit" id="submit" value="Post your answer" class="button small color">
+                <input name="submit" type="submit" value="Post your answer" class="button small color">
               </p>
           </form>
+     
+          {% else %}
+          <h3>Please <a href="/{{'login'}}" style="text-decoration: underline; color: blue">Login</a> to Reply</h3>
+          {% endif %}
       </div>
       
       <div class="post-next-prev clearfix">

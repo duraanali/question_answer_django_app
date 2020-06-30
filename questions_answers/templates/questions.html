@@ -16,7 +16,6 @@
   
     <a href="/{{question.id}}/question_detail">{{question.title}}</a>
   </h2>
-  <a class="question-report" href="#">Report</a>
 
   <div class="question-author">
     <a href="#" original-title="ahmed" class="question-author-img tooltip-n"><span></span><img alt="" src="http://placehold.it/60x60/FFF/444"></a>
@@ -32,7 +31,7 @@
       {% endif %}
     </div>
     <!-- <span class="question-category"><a href="#"><i class="icon-folder-close"></i>wordpress</a></span> -->
-    <span class="question-date"><i class="icon-time"></i>{{ question.created|timesince }} ago</span>
+    <span class="question-date"><i class="icon-time"></i> Asked {{ question.created|timesince }} ago</span>
     {% for answer in answers_list %}
     <span class="question-comment"><a href="#"><i class="icon-comment"></i>5 Answer {{ answer.count }}</a></span>
     {% endfor %}
@@ -48,9 +47,21 @@
 </article>
 {% endfor %}
 
+<div class="pagination">
+  <span class="step-links">
+    {% if page.has_previous %}
+    <a href="?page={{ page.previous_page_number }}">Previous</a>
+    {% endif %}
+    <span class="current">
+      Page {{ page.number }} of {{ page.paginator.num_pages }}.
+    </span>
+    {% if page.has_next %}
+    <a href="?page={{ page.next_page_number }}">Next</a>
+    {% endif %}
+  </span>
+</div>
 
 
-<a href="#" class="load-questions"><i class="icon-refresh"></i>Load More Questions</a>
 </div>
 </div>
 </div><!-- End page-content -->

@@ -7,11 +7,10 @@
 		<div class="col-md-12">	
 				<div class="page-content ask-question" style="padding: 60px;">
 					<div class="boxedtitle page-title">
-						<h2>Ask Question</h2>
+						<h2>Ask a public question</h2>
 					</div>
 			{% if user.is_authenticated %}
-					<p>Duis dapibus aliquam mi, eget euismod sem scelerisque ut. Vivamus at elit quis urna adipiscing iaculis.
-						Curabitur vitae velit in neque dictum blandit. Proin in iaculis neque.</p>
+					
 			
 					<div class="form-style form-style-3" id="question-submit">
 						
@@ -20,19 +19,10 @@
 							<div class="form-inputs clearfix">
 								<p>
 									<label class="required">Question Title<span>*</span></label>
+									<div style="margin-bottom: 10px;">Be specific and imagine you’re asking a question to another person</div>
 									{{ form.title }}
 							
 								</p>
-					
-								 <p>
-									<label class="required">Status<span>*</span></label>
-									
-										{{ form.status }}
-							
-								</p> 
-							
-							
-			
 							
 			
 							</div>
